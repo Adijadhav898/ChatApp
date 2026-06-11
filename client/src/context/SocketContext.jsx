@@ -17,10 +17,12 @@ export const SocketProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       const newSocket = io("https://chatapp-815o.onrender.com", {
         auth: { token }, // JWT token bhejo
+        transports: ["polling"], // Force Polling mode taaki Render connection drop na kare
+        upgrade: false           // Websocket par upgrade karne ki koshish nahi karega
       });
 
       newSocket.on("connect", () => {
-        console.log("Socket connected!");
+        console.log("Socket connected via polling!");
       });
 
       // ── Online users track karo ─────────────────────────────────────────
