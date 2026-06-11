@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
     if (user) {
       // ── Socket connect karo ─────────────────────────────────────────────
       const token = localStorage.getItem("token");
-      const newSocket = io("http://chatapp-815o.onrender.com", {
+      const newSocket = io("https://chatapp-815o.onrender.com", {
         auth: { token }, // JWT token bhejo
       });
 
