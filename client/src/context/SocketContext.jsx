@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
     if (user) {
       // ── Socket connect karo ─────────────────────────────────────────────
       const token = localStorage.getItem("token");
-      const newSocket = io("https://chatapp-815o.onrender.com", {
+      const newSocket = io("https://chatapp-8l5o.onrender.com", {
         auth: { token }, // JWT token bhejo
         transports: ["polling"], // Force Polling mode taaki Render connection drop na kare
         upgrade: false           // Websocket par upgrade karne ki koshish nahi karega
