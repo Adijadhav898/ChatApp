@@ -39,6 +39,10 @@ const authRoutes = require("./routes/auth");
 const roomRoutes = require("./routes/rooms");
 const messageRoutes = require("./routes/messages");
 const userRoutes = require("./routes/users");
+// Health check route - server ko jaagta rakhne ke liye
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 app.use("/api/auth", authRoutes);       // /api/auth/login, /api/auth/register
 app.use("/api/rooms", roomRoutes);      // /api/rooms
