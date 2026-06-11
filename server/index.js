@@ -15,22 +15,15 @@ const server = http.createServer(app); // socket.io ke liye http server chahiye
 // ─── Socket.io Setup ─────────────────────────────────────────────────────────
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "https://chat-app-navy-zeta.vercel.app"
-    ],
+    origin: "*",
     methods: ["GET", "POST"],
-    credentials: true,
   },
 });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://chat-app-navy-zeta.vercel.app"
-  ],
-  credentials: true,
+  origin: "*",
+  credentials: false,
 }));
 app.use(express.json()); // JSON body parse karne ke liye
 
