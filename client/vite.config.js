@@ -8,7 +8,7 @@ export default defineConfig({
     // Backend ka proxy - API calls mein /api likhne se automatically backend pe jayega
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "https://chatapp-815o.onrender.com",
         changeOrigin: true,
       },
     },
