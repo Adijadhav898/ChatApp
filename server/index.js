@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
-const cors = require("cors");
+const cors = require("cors"); // Ye module pehle se imported hai
 const dotenv = require("dotenv");
 
 // env variables load karo
@@ -12,13 +12,13 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // socket.io ke liye http server chahiye
 
-// ─── CORS Middleware Setup (Sabse Pehle) ─────────────────────────────────────
-// Isko baki saare routes aur express.json() se upar rakhna zaroori hai
+// ─── CORS Middleware Setup (Master Fix) ──────────────────────────────────────
+// Custom header function ko hata kar bas ye ek line likhein. 
+// Isko baki saare routes aur express.json() se upar rakhna zaroori hai.
 app.use(cors({
-  origin: "https://chat-app-navy-zeta.vercel.app", // Aapki frontend Vercel app ka URL
+  origin: "*", // Testing ke liye sab kuch allow karega bina kisi dikkat ke
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
@@ -26,9 +26,8 @@ app.use(express.json());
 // ─── Socket.io Setup ─────────────────────────────────────────────────────────
 const io = new Server(server, {
   cors: {
-    origin: "https://chat-app-navy-zeta.vercel.app", // Socket ke liye bhi CORS handle kiya
+    origin: "*",
     methods: ["GET", "POST"],
-    credentials: true
   },
 });
 
