@@ -12,34 +12,32 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // socket.io ke liye http server chahiye
 
+// ─── CORS Middleware Setup (Sabse Pehle) ─────────────────────────────────────
+// Isko baki saare routes aur express.json() se upar rakhna zaroori hai
+app.use(cors({
+  origin: "https://chat-app-navy-zeta.vercel.app", // Aapki frontend Vercel app ka URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+app.use(express.json());
+
 // ─── Socket.io Setup ─────────────────────────────────────────────────────────
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://chat-app-navy-zeta.vercel.app", // Socket ke liye bhi CORS handle kiya
     methods: ["GET", "POST"],
+    credentials: true
   },
 });
-
-// ─── Middleware ───────────────────────────────────────────────────────────────
-// ─── Middleware ───────────────────────────────────────────────────────────────
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  res.setHeader("Access-Control-Max-Age", "86400");
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-  next();
-});
-
-app.use(express.json());
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 const authRoutes = require("./routes/auth");
 const roomRoutes = require("./routes/rooms");
 const messageRoutes = require("./routes/messages");
 const userRoutes = require("./routes/users");
+
 // Health check route - server ko jaagta rakhne ke liye
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
