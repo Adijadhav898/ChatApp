@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
-const cors = require("cors"); // Ye module pehle se imported hai
+const cors = require("cors");
 const dotenv = require("dotenv");
 
 // env variables load karo
@@ -12,23 +12,25 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // socket.io ke liye http server chahiye
 
-// ─── CORS Middleware Setup (Master Fix) ──────────────────────────────────────
-// Custom header function ko hata kar bas ye ek line likhein. 
-// Isko baki saare routes aur express.json() se upar rakhna zaroori hai.
+// ─── CORS Middleware Setup (Official Package) ───────────────────────────────
+// Isko sabhi routes aur express.json() se upar rakhna zaroori hai.
+// Ye browser ke pre-flight OPTIONS request ko automatic handle kar lega.
 app.use(cors({
-  origin: "*", // Testing ke liye sab kuch allow karega bina kisi dikkat ke
+  origin: "*", // Testing ke liye har jagah se allow karega bina kisi dikkat ke
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
 
-// ─── Socket.io Setup ─────────────────────────────────────────────────────────
+// ─── Socket.io Setup (Forced Polling Mode) ───────────────────────────────────
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
+  transports: ["polling"], // Render free tier pe connection drop hone se bachaega
+  allowEIO3: true          // Backward compatibility ke liye safe hai
 });
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
